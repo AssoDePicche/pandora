@@ -9,7 +9,7 @@ export default function App() {
             Your inventory at your fingertips
           </h1>
           <p className="py-6">
-            Box Inc provides software that makes life as easy as possible for entrepreneurs in the new world. <Link href="/signup" className="underline">Sign up</Link> and start managing your business in just a few clicks.
+            Pandora provides software that makes life as easy as possible for entrepreneurs in the new world. <Link href="/signup" className="underline">Sign up</Link> and start managing your business in just a few clicks.
           </p>
         </div>
       </div>
