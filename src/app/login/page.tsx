@@ -1,14 +1,14 @@
 "use client"
 
-import { useState } from "react";
+import { useState, FormEvent } from "react";
 
 import Form from "next/form";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 
-import Alert from "../../components/alert";
-import Button from "../../components/button";
-import Input from "../../components/input";
+import Alert from "@/components/alert";
+import Button from "@/components/button";
+import TextField from "@/components/text-field";
 
 export default function Login() {
   const [alertText, setAlertText] = useState(null);
@@ -54,9 +54,9 @@ export default function Login() {
     <Form className="flex flex-col gap-y-4" onSubmit={submit}>
       <h1 className="font-black text-4xl">Login</h1>
 
-      <Input type="email" name="email" placeholder="Email" />
+      <TextField type="email" name="email" maxlength={255} placeholder="Email" />
 
-      <Input type="password" name="password" placeholder="Password" />
+      <TextField type="password" name="password" minlength={8} placeholder="Password" />
 
       <Button type="submit">Login</Button>
 

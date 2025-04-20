@@ -2,13 +2,13 @@
 
 import { useState } from "react";
 
-import Form from 'next/form';
-import Link from 'next/link';
+import Form from "next/form";
+import Link from "next/link";
 import { useRouter } from "next/navigation";
 
-import Alert from '../../components/alert';
-import Button from '../../components/button';
-import Input from '../../components/input';
+import Alert from "@/components/alert";
+import Button from "@/components/button";
+import TextField from "@/components/text-field";
 
 export default function Signup() {
   const [alertText, setAlertText] = useState(null);
@@ -70,13 +70,15 @@ export default function Signup() {
     <Form className="flex flex-col gap-y-4" onSubmit={submit}>
       <h1 className="font-black text-4xl">Sign Up</h1>
 
-      <Input type="text" name="username" placeholder="Username" />
+      <TextField type="text" name="username" placeholder="Username" />
 
-      <Input type="email" name="email" placeholder="Email" />
+      <TextField type="email" name="email" placeholder="Email" />
 
-      <Input type="Password" name="password" placeholder="Password" />
+      <TextField type="Password" name="password" placeholder="Password" />
 
-      <Button type="submit">Sign Up</Button>
+      <Button type="submit">
+        <span>Sign Up</span>
+      </Button>
 
       <p>
         Already have an account? <Link href="/login" className="underline">Login</Link>
