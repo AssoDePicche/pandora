@@ -25,7 +25,7 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body
-        className={`${inter.variable} antialiased w-screen h-screen flex flex-col overflow-hidden`}
+        className={`${inter.variable} antialiased w-full h-screen flex flex-col select-none`}
       >
         <Navbar />
 
