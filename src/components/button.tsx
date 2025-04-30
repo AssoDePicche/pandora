@@ -1,7 +1,7 @@
-type Properties = {
+type Properties = Readonly<{
   type?: string;
   children?: React.ReactNode;
-};
+}>;
 
 export default function Button(properties: Properties) {
   return (
