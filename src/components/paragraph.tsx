@@ -2,6 +2,6 @@ type Properties = {
   children?: React.ReactNode;
 };
 
-export default function Paragraph(properties: Properties) {
-  return <p className="py-6 text-base">{properties?.children}</p>;
+export default function Component(properties: Properties) {
+  return <p className="text-base">{properties?.children}</p>;
 }
