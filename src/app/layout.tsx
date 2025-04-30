@@ -1,36 +1,39 @@
-import "./globals.css";
+import './globals.css';
 
-import type { Metadata } from "next";
+import config from '@/config';
 
-import { Inter } from "next/font/google";
+import type { Metadata } from 'next';
 
-import Navbar from "../components/navbar"
-import Footer from "../components/footer"
+import { Inter } from 'next/font/google';
+
+import Footer from '@/components/footer';
+
+import Navbar from '@/components/navbar';
 
 const inter = Inter({
-  variable: "--font-face",
-  subsets: ["latin"],
+  variable: '--font-face',
+  subsets: ['latin'],
 });
 
 export const metadata: Metadata = {
-  title: "Pandora",
-  description: "Hephaestus frontend",
+  title: 'Pandora',
+  description: 'Hephaestus frontend',
 };
 
-export default function RootLayout({
-  children,
-}: Readonly<{
-  children: React.ReactNode;
-}>) {
+type Properties = Readonly<{
+  children: React.ReacNode;
+}>;
+
+export default function RootLayout(properties: Properties) {
   return (
-    <html lang="en">
+    <html lang={config.language}>
       <body
         className={`${inter.variable} antialiased w-full h-screen flex flex-col select-none`}
       >
         <Navbar />
 
         <main className="flex-grow flex items-center justify-center">
-          {children}
+          {properties.children}
         </main>
 
         <Footer />
