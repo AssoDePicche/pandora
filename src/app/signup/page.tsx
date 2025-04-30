@@ -1,17 +1,29 @@
-"use client"
+'use client';
 
-import { useState } from "react";
+import { useState } from 'react';
 
-import Form from "next/form";
-import Link from "next/link";
-import { useRouter } from "next/navigation";
+import Form from 'next/form';
 
-import Alert from "@/components/alert";
-import Button from "@/components/button";
-import TextField from "@/components/text-field";
+import Link from 'next/link';
+
+import { useRouter } from 'next/navigation';
+
+import AuthGuard from '@/components/auth-guard';
+
+import Button from '@/components/button';
+
+import Message from '@/components/message';
+
+import Paragraph from '@/components/paragraph';
+
+import TextField from '@/components/text-field';
+
+import Title from '@/components/title';
+
+import Hermes from '@/services/hermes';
 
 export default function Signup() {
-  const [alertText, setAlertText] = useState(null);
+  const [message, setMessage] = useState(null);
 
   const router = useRouter();
 
@@ -21,70 +33,56 @@ export default function Signup() {
     try {
       const data = new FormData(event.currentTarget);
 
-      const headers = new Headers();
-
-      headers.set("Accept", "application/json");
-
-      headers.set("Accept-Language", "en-US");
-
-      let response = await fetch("http://localhost:3000/signup", {
-        method: "POST",
-        headers: headers,
-        body: JSON.stringify({
-          username: data.get("username"),
-          email: data.get("email"),
-          password: data.get("password"),
-        })
-      }).then((response) => response.json());
+      let response = await Hermes.post('http://localhost:3000/signup', {
+        username: data.get("username"),
+        email: data.get("email"),
+        password: data.get("password")
+      });
 
       if (201 !== response.status) {
-        setAlertText(response.error);
+        setMessage(response.error);
 
         return;
       }
 
-      response = await fetch("http://localhost:3000/login", {
-        method: "POST",
-        headers: headers,
-        body: JSON.stringify({
-          email: data.get("email"),
-          password: data.get("password"),
-        })
-      }).then((response) => response.json());
+      response = await Hermes.post('http://localhost:3000/login', {
+        email: data.get('email'),
+        password: data.get('password')
+      });
 
       if (200 !== response.status) {
-        setAlertText(response.error);
+        setMessage(response.error);
 
         return;
       }
 
-      localStorage.setItem("token", response.payload.token);
+      localStorage.setItem('token', response.payload.token);
 
-      router.push("/home");
+      router.push('/home');
     } catch (error) {
-      setAlertText(error.message);
+      setMessage(error.message);
     }
   }
 
   return (
-    <Form className="flex flex-col gap-y-4" onSubmit={submit}>
-      <h1 className="font-black text-4xl">Sign Up</h1>
+    <AuthGuard>
+      <Form className="flex flex-col gap-y-4" onSubmit={submit}>
+        <Title>Sign Up</Title>
 
-      <TextField type="text" name="username" placeholder="Username" />
+        <TextField type="text" name="username" placeholder="Username" />
 
-      <TextField type="email" name="email" placeholder="Email" />
+        <TextField type="email" name="email" placeholder="Email" />
 
-      <TextField type="Password" name="password" placeholder="Password" />
+        <TextField type="Password" name="password" placeholder="Password" />
 
-      <Button type="submit">
-        <span>Sign Up</span>
-      </Button>
+        <Button type="submit">Sign Up</Button>
 
-      <p>
-        Already have an account? <Link href="/login" className="underline">Login</Link>
-      </p>
+        <Paragraph>
+          Already have an account? <Link href="/login" className="underline">Login</Link>
+        </Paragraph>
 
-      <Alert>{alertText}</Alert>
-    </Form>
+        <Message>{message}</Message>
+      </Form>
+    </AuthGuard>
   );
 }

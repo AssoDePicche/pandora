@@ -1,17 +1,29 @@
-"use client"
+'use client';
 
-import { useState, FormEvent } from "react";
+import { useState, FormEvent } from 'react';
 
-import Form from "next/form";
-import Link from "next/link";
-import { useRouter } from "next/navigation";
+import Form from 'next/form';
 
-import Alert from "@/components/alert";
-import Button from "@/components/button";
-import TextField from "@/components/text-field";
+import Link from 'next/link';
 
-export default function Login() {
-  const [alertText, setAlertText] = useState(null);
+import { useRouter } from 'next/navigation';
+
+import AuthGuard from '@/components/auth-guard';
+
+import Button from '@/components/button';
+
+import Message from '@/components/message';
+
+import Paragraph from '@/components/paragraph';
+
+import TextField from '@/components/text-field';
+
+import Title from '@/components/title';
+
+import Hermes from '@/services/hermes.tsx';
+
+export default function Page() {
+  const [message, setMessage] = useState(null);
 
   const router = useRouter();
 
@@ -21,50 +33,42 @@ export default function Login() {
     try {
       const data = new FormData(event.currentTarget);
 
-      const headers = new Headers();
-
-      headers.set("Accept", "application/json");
-
-      headers.set("Accept-Language", "en-US");
-
-      const response = await fetch("http://localhost:3000/login", {
-        method: "POST",
-        headers: headers,
-        body: JSON.stringify({
-          email: data.get("email"),
-          password: data.get("password"),
-        })
-      }).then((response) => response.json());
+      const response = await Hermes.post('http://localhost:3000/login', {
+        email: data.get('email'),
+        password: data.get('password')
+      });
 
       if (200 !== response.status) {
-        setAlertText(response.error);
+        setMessage(response.error);
 
         return;
       }
 
-      localStorage.setItem("token", response.payload.token);
+      localStorage.setItem('token', response.payload.token);
 
-      router.push("/home");
+      router.push('/home');
     } catch (error) {
-      setAlertText(error.message);
+      setMessage('Backend service unavailable');
     }
   }
 
   return (
-    <Form className="flex flex-col gap-y-4" onSubmit={submit}>
-      <h1 className="font-black text-4xl">Login</h1>
+    <AuthGuard>
+      <Form className="flex flex-col gap-y-4" onSubmit={submit}>
+        <Title>Login</Title>
 
-      <TextField type="email" name="email" maxlength={255} placeholder="Email" />
+        <TextField type="email" name="email" maxlength={255} placeholder="Email" />
 
-      <TextField type="password" name="password" minlength={8} placeholder="Password" />
+        <TextField type="password" name="password" minlength={8} placeholder="Password" />
 
-      <Button type="submit">Login</Button>
+        <Button type="submit">Login</Button>
 
-      <p>
-        Already have an account? <Link href="/signup" className="underline">Sign Up</Link>
-      </p>
+        <Paragraph>
+          Already have an account? <Link href="/signup" className="underline">Sign Up</Link>
+        </Paragraph>
 
-      <Alert>{alertText}</Alert>
-    </Form>
+        <Message>{message}</Message>
+      </Form>
+    </AuthGuard>
   );
 }
