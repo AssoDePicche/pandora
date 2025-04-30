@@ -1,15 +1,19 @@
-"use client";
+'use client';
 
-import { useEffect } from "react";
+import AuthGuard from '@/components/auth-guard';
 
-import { useRouter } from "next/navigation";
+import { useEffect } from 'react';
 
-export default function Logout() {
+import { useRouter } from 'next/navigation';
+
+export default function Page() {
   const router = useRouter();
 
   useEffect(() => {
-    localStorage.removeItem("token");
+    localStorage.removeItem('token');
 
-    router.push("/login");
+    router.push('/login');
   }, [router]);
+
+  return <AuthGuard></AuthGuard>;
 };
