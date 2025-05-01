@@ -1,10 +1,16 @@
 'use client';
 
-import { useEffect, useState } from 'react';
+import { FormEvent, useEffect, useState } from 'react';
+
+import Form from 'next/form';
 
 import config from '@/config';
 
 import AuthGuard from '@/components/auth-guard';
+
+import Button from '@/components/button';
+
+import ComboBox, { Option } from '@/components/combo-box';
 
 import Paragraph from '@/components/paragraph';
 
@@ -18,6 +24,8 @@ export default function Page() {
 
     return new Date(date).toLocaleDateString(config.language, options);
   }
+
+  const languages = ['en-US', 'pt-BR'];
 
   const [profile, setProfile] = useState(null);
 
@@ -67,19 +75,34 @@ export default function Page() {
     );
   }
 
+  async function submit(event: FormEvent<HTMLFormElement>) {
+    event.preventDefault();
+
+    const data = new FormData(event.currentTarget);
+  }
+
   return (
     <AuthGuard>
-      <div className="flex items-center justify-center gap-x-4 h-full w-full">
-        <div>
-          <Title>{profile.username}'s Profile</Title>
+      <Form className="flex flex-col gap-y-4">
+        <Title>{profile.username}'s Profile</Title>
 
-          <Paragraph>E-mail: {profile.email}</Paragraph>
+        <Paragraph>Email: {profile.email}</Paragraph>
 
-          <Paragraph>Created At: {formatDate(profile.createdAt)}</Paragraph>
+        <Paragraph>Member since {formatDate(profile.createdAt)}</Paragraph>
 
-          <Paragraph>Language: {config.language}</Paragraph>
+        <div className="flex items-center gap-x-4">
+          <span>Language:</span>
+          <ComboBox>
+          {
+            languages.map((language) => (
+              <Option key={language}>{language}</Option>
+            ))
+          }
+          </ComboBox>
         </div>
-      </div>
+
+        <Button type="submit">Save Changes</Button>
+      </Form>
     </AuthGuard>
   );
 }
