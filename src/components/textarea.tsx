@@ -1,26 +1,26 @@
-"use client";
+'use client';
 
-import React, { useLayoutEffect, useRef } from "react";
+import React, { useLayoutEffect, useRef } from 'react';
 
-type Properties = {
+type Properties = Readonly<{
   name: string;
   placeholder?: string;
   children?: React.ReactNode;
-};
+}>;
 
-export default function Textarea(properties: Properties) {
+export default function Component(properties: Properties) {
   const component = useRef(null);
 
-  const onChange = () => {
-    component.current.style.height = "inherit";
+  const update = () => {
+    component.current.style.height = 'inherit';
 
     component.current.style.height = `${component.current.scrollHeight}px`;
   };
 
-  useLayoutEffect(onChange, []);
+  useLayoutEffect(update, []);
 
   return (
-    <textarea className="relative resize-none rounded-md focus:outline-none border-(--component) border-2 border-solid px-4 py-4 w-full overflow-hidden" ref={component} onChange={onChange} placeholder={properties?.placeholder} name={properties.name}>
+    <textarea className="relative resize-none rounded-md focus:outline-none border-(--component) border-2 border-solid px-4 py-4 w-full overflow-hidden" ref={component} onChange={update} placeholder={properties?.placeholder} name={properties.name}>
       {properties?.children}
     </textarea>
   );
