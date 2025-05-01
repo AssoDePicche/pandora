@@ -18,13 +18,7 @@ const request = async (url, method, body = null) => {
     ...(body && { body: JSON.stringify(body) }),
   };
 
-  try {
-    return await fetch(url, options).then((response) => response.json());
-  } catch (error) {
-    console.error('Request failed: ', error);
-
-    throw error;
-  }
+  return await fetch(url, options).then((response) => response.json()).catch((error) => console.error);
 };
 
 const get = (url) => request(url, 'GET');
