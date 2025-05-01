@@ -20,7 +20,9 @@ export default function Component(properties: Properties) {
   useEffect(() => {
     const authenticated = null !== localStorage.getItem('token');
 
-    if (authenticated || !authenticated && skip.includes(pathname)) {
+    if (authenticated && skip.includes(pathname)) {
+      router.replace('/home');
+    } else if (authenticated || !authenticated && skip.includes(pathname)) {
       setIsLoading(false);
     } else {
       router.replace('/login');
