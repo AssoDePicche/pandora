@@ -15,22 +15,16 @@ export default function Component(properties: Properties) {
 
   const pathname = usePathname();
 
+  const skip = ['/login', '/signup'];
+
   useEffect(() => {
-    const token = localStorage.getItem('token');
+    const authenticated = null !== localStorage.getItem('token');
 
-    if (!token) {
+    if (authenticated || !authenticated && skip.includes(pathname)) {
+      setIsLoading(false);
+    } else {
       router.replace('/login');
-
-      return;
     }
-
-    if (pathname === '/signup' || pathname === '/login') {
-      router.replace('/home');
-
-      return;
-    }
-
-    setIsLoading(false);
   }, [router]);
 
   if (isLoading) {
